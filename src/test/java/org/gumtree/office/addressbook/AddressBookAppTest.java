@@ -28,4 +28,11 @@ public class AddressBookAppTest
 		Assert.assertEquals(3, maleCount);
 	}
 	
+	@Test
+	public void textGetOldestPerson() {
+		List<AddressBookEntry> testData = AddressBookData.getAddressBookDataList();
+		AddressBookEntry oldestPerson = addressBookApp.getOldestPerson(testData);
+
+		Assert.assertEquals("Wes Jackson", oldestPerson.getName());
+	}
 }

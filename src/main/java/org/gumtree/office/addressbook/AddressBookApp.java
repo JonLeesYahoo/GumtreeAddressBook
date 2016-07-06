@@ -5,6 +5,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -59,6 +60,18 @@ public class AddressBookApp
 		}
 		return numMales;
 	}
+
+	/**
+	 * Determine the Oldest Person in the AddressBook using DateOfBirth 
+	 * 
+	 * @param allData - the AddressBook to search
+	 * @return - the full AddressBookEntry for the oldest person
+	 */
+	public AddressBookEntry getOldestPerson(List<AddressBookEntry> allData) {
+		Collections.sort(allData, new PersonAgeComparator());
+		return allData.get(0);
+	}
+
 	
 	public static void main (String [] args) {
 		String fileName = "";
@@ -78,7 +91,11 @@ public class AddressBookApp
 		AddressBookApp addressBookApp = new AddressBookApp();
 		List<AddressBookEntry> fileData = addressBookApp.load(file);
 		int maleCount = addressBookApp.getNumberOfMaleRecords(fileData);
+		String oldestPerson = addressBookApp.getOldestPerson(fileData).getName();
+		
 		System.out.println("The number of males is: "+maleCount);
+		System.out.println("The oldest person is: "+oldestPerson);
+
 	}
 
 }

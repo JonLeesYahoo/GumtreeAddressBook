@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 public class AddressBookApp 
 {
 	Logger logger = LogManager.getLogManager().getLogger(AddressBookApp.class.getName());	
-
+	
 	/**
 	 * load the file specified in the Path variable into a List off Strings
 	 * 
@@ -72,7 +73,32 @@ public class AddressBookApp
 		return allData.get(0);
 	}
 
+	/**
+	 * Find the first person in the list whose name matches the name supplied
+	 * 
+	 * @param allData - the address book to search in
+	 * @param name - the name to search for
+	 * @return - the AddressBookEntry record of the person found 
+	 */
+	public AddressBookEntry getPersonByName(List<AddressBookEntry> allData, String name) {
+		AddressBookEntry personFound = null;
+		for (AddressBookEntry rec : allData) {
+			if (rec.getName().equals(name)) {
+				personFound = rec;
+				break;
+			}
+		}
+		return personFound;
+	}
 	
+	public int getAgeDifferenceBetweenTwoNames(List<AddressBookEntry> allData, String name1, String name2) {
+		AddressBookEntry person1 = getPersonByName(allData, name1);
+		AddressBookEntry person2 = getPersonByName(allData, name2);
+		LocalDate today = LocalDate.now();
+
+		return Math.abs(person1.getAge(today) - person2.getAge(today));
+	}
+
 	public static void main (String [] args) {
 		String fileName = "";
 
@@ -82,20 +108,29 @@ public class AddressBookApp
 		} else {
 			//Otherwise, show usage and defaulting messages
 			System.out.println("Usage: AddressBookApp fileToLoadName");
-			System.out.println("Defaulting to AddressBook");
+			System.out.println("Defaulting fileToLoadName to AddressBook");
+			System.out.println("");
 			fileName = "AddressBook";
 		}		
 
 		Path file = Paths.get(fileName).toAbsolutePath();
 
 		AddressBookApp addressBookApp = new AddressBookApp();
-		List<AddressBookEntry> fileData = addressBookApp.load(file);
+		List<AddressBookEntry> fileData = addressBookApp.load(file);		
+
+		//1. Count the number of males
 		int maleCount = addressBookApp.getNumberOfMaleRecords(fileData);
-		String oldestPerson = addressBookApp.getOldestPerson(fileData).getName();
-		
 		System.out.println("The number of males is: "+maleCount);
+
+		//2. Find the oldest person
+		String oldestPerson = addressBookApp.getOldestPerson(fileData).getName();
 		System.out.println("The oldest person is: "+oldestPerson);
 
+		//3. Determine the age difference between Bill & Paul
+		String name1 = "Bill McKnight";
+		String name2 = "Paul Robinson";
+		int ageDifference = addressBookApp.getAgeDifferenceBetweenTwoNames(fileData, name1, name2);
+		System.out.println("The age difference between "+name1+" and "+name2+" is: "+ageDifference + " years");
 	}
 
 }

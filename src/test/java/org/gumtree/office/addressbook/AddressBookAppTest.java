@@ -29,10 +29,29 @@ public class AddressBookAppTest
 	}
 	
 	@Test
-	public void textGetOldestPerson() {
+	public void testGetOldestPerson() {
 		List<AddressBookEntry> testData = AddressBookData.getAddressBookDataList();
 		AddressBookEntry oldestPerson = addressBookApp.getOldestPerson(testData);
 
 		Assert.assertEquals("Wes Jackson", oldestPerson.getName());
 	}
+	
+	@Test
+	public void testGetPersonByName() {
+		String name = "Sarah Stone";
+		List<AddressBookEntry> testData = AddressBookData.getAddressBookDataList();
+		AddressBookEntry sarah = addressBookApp.getPersonByName(testData, name);
+		Assert.assertEquals(name, sarah.getName());
+	}
+
+	@Test
+	public void testGetAgeDiffereneBetweenTwoPersons() {
+		String name1 = "Bill McKnight";
+		String name2 = "Paul Robinson";
+		
+		List<AddressBookEntry> testData = AddressBookData.getAddressBookDataList();
+		int ageDifference = addressBookApp.getAgeDifferenceBetweenTwoNames(testData, name1, name2);
+		Assert.assertEquals(8, ageDifference);
+	}
+		
 }

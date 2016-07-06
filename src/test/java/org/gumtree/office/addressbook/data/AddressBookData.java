@@ -25,5 +25,4 @@ public class AddressBookData {
 		return addressBookDataList;
 	}
 
-	
 }

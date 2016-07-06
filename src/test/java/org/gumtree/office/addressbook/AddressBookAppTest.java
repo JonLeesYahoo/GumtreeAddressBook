@@ -12,20 +12,20 @@ public class AddressBookAppTest
 {
 
 	private Path file = Paths.get("AddressBook").toAbsolutePath();
-    private AddressBookApp addressBookApp = new AddressBookApp();
+	private AddressBookApp addressBookApp = new AddressBookApp();
 	
 	@Test
 	public void testLoadFromFile() {
-	    List<AddressBookEntry> fileData = addressBookApp.load(file);
-	    Assert.assertEquals(5, fileData.size());
+		List<AddressBookEntry> fileData = addressBookApp.load(file);
+		Assert.assertEquals(5, fileData.size());
 	}
 	
 	@Test 
 	public void testCountNumberOfMales() {
 		List<AddressBookEntry> testData = AddressBookData.getAddressBookDataList();
-	    int maleCount = addressBookApp.getNumberOfMaleRecords(testData);
-		
-	    Assert.assertEquals(3, maleCount);
+		int maleCount = addressBookApp.getNumberOfMaleRecords(testData);
+
+		Assert.assertEquals(3, maleCount);
 	}
 	
 }

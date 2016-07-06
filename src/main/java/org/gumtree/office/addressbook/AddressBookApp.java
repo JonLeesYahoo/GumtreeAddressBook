@@ -75,11 +75,10 @@ public class AddressBookApp
 
 		Path file = Paths.get(fileName).toAbsolutePath();
 
-	    AddressBookApp addressBookApp = new AddressBookApp();
+		AddressBookApp addressBookApp = new AddressBookApp();
 		List<AddressBookEntry> fileData = addressBookApp.load(file);
 		int maleCount = addressBookApp.getNumberOfMaleRecords(fileData);
 		System.out.println("The number of males is: "+maleCount);
-
 	}
 
 }

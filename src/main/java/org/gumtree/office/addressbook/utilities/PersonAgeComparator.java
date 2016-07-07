@@ -1,6 +1,8 @@
-package org.gumtree.office.addressbook;
+package org.gumtree.office.addressbook.utilities;
 
 import java.util.Comparator;
+
+import org.gumtree.office.addressbook.model.AddressBookEntry;
 
 public class PersonAgeComparator implements Comparator<AddressBookEntry> 
 {

@@ -1,8 +1,9 @@
-package org.gumtree.office.addressbook;
+package org.gumtree.office.addressbook.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import org.gumtree.office.addressbook.model.AddressBookEntry;
 import org.junit.Test;
 
 import junit.framework.Assert;

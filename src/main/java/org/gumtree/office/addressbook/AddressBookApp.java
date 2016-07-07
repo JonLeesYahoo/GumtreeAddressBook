@@ -1,104 +1,27 @@
 package org.gumtree.office.addressbook;
 
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+
+import org.gumtree.office.addressbook.model.AddressBook;
+import org.gumtree.office.addressbook.model.AddressBookEntry;
 
 /**
- * The AddressBook coding Exercise for GumTree
- *
+ * The AddressBook coding Exercise for GumTree.
+ * 
+ * The exercise is to read the AddressBook file and then determine ;
+ * 
+ * 1. How many males are in the address book?
+ * 2. Who is the oldest person in the address book?
+ * 3. How many days older is Bill than Paul?
+ * 
+ * The functionality is contained mostly in the AddressBook class, with associated classes and test classes.
+ * 
  */
 public class AddressBookApp 
 {
-	Logger logger = LogManager.getLogManager().getLogger(AddressBookApp.class.getName());	
 	
-	/**
-	 * load the file specified in the Path variable into a List off Strings
-	 * 
-	 * @param file
-	 * @return List of Strings from the file
-	 * 
-	 */
-	public List<AddressBookEntry> load(Path file) {
-		List<String> fileData = null;
-		List<AddressBookEntry> addressBookDataList = new ArrayList<AddressBookEntry>();  
-		try {
-			fileData = java.nio.file.Files.readAllLines(file, Charset.defaultCharset());
-			AddressBookEntry addressBookEntry = null;
-			for (String row: fileData) {
-				String[] fields = row.split(",");
-				addressBookEntry = new AddressBookEntry(fields[0], fields[1], fields[2]);
-				addressBookDataList.add(addressBookEntry);
-			}
-			
-		} catch (IOException e) {
-			logger.log(Level.SEVERE, e.getMessage());
-		}
-	    return addressBookDataList;
-	}
-	
-	
-	/**
-	 * Count up the number of records that are Male
-	 * 
-	 * @param allData - the full list of AddressBook data
-	 * @return - the count of the number of males
-	 */
-	public int getNumberOfMaleRecords(List<AddressBookEntry> allData) {
-		int numMales = 0;
-		for (AddressBookEntry rec : allData) {
-			if (rec.isMale()) {
-				numMales++;
-			}
-		}
-		return numMales;
-	}
-
-	/**
-	 * Determine the Oldest Person in the AddressBook using DateOfBirth 
-	 * 
-	 * @param allData - the AddressBook to search
-	 * @return - the full AddressBookEntry for the oldest person
-	 */
-	public AddressBookEntry getOldestPerson(List<AddressBookEntry> allData) {
-		Collections.sort(allData, new PersonAgeComparator());
-		return allData.get(0);
-	}
-
-	/**
-	 * Find the first person in the list whose name matches the name supplied
-	 * 
-	 * @param allData - the address book to search in
-	 * @param name - the name to search for
-	 * @return - the AddressBookEntry record of the person found 
-	 */
-	public AddressBookEntry getPersonByName(List<AddressBookEntry> allData, String name) {
-		AddressBookEntry personFound = null;
-		for (AddressBookEntry rec : allData) {
-			if (rec.getName().equals(name)) {
-				personFound = rec;
-				break;
-			}
-		}
-		return personFound;
-	}
-	
-	public int getAgeDifferenceBetweenTwoNames(List<AddressBookEntry> allData, String name1, String name2) {
-		AddressBookEntry person1 = getPersonByName(allData, name1);
-		AddressBookEntry person2 = getPersonByName(allData, name2);
-		LocalDate today = LocalDate.now();
-
-		return Math.abs(person1.getAge(today) - person2.getAge(today));
-	}
-
 	public static void main (String [] args) {
 		String fileName = "";
 
@@ -115,21 +38,21 @@ public class AddressBookApp
 
 		Path file = Paths.get(fileName).toAbsolutePath();
 
-		AddressBookApp addressBookApp = new AddressBookApp();
-		List<AddressBookEntry> fileData = addressBookApp.load(file);		
+		AddressBook addressBook = new AddressBook();
+		List<AddressBookEntry> fileData = addressBook.load(file);		
 
 		//1. Count the number of males
-		int maleCount = addressBookApp.getNumberOfMaleRecords(fileData);
+		int maleCount = addressBook.getNumberOfMaleRecords(fileData);
 		System.out.println("The number of males is: "+maleCount);
 
 		//2. Find the oldest person
-		String oldestPerson = addressBookApp.getOldestPerson(fileData).getName();
+		String oldestPerson = addressBook.getOldestPerson(fileData).getName();
 		System.out.println("The oldest person is: "+oldestPerson);
 
 		//3. Determine the age difference between Bill & Paul
 		String name1 = "Bill McKnight";
 		String name2 = "Paul Robinson";
-		int ageDifference = addressBookApp.getAgeDifferenceBetweenTwoNames(fileData, name1, name2);
+		int ageDifference = addressBook.getAgeDifferenceBetweenTwoNames(fileData, name1, name2);
 		System.out.println("The age difference between "+name1+" and "+name2+" is: "+ageDifference + " years");
 	}
 

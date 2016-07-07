@@ -3,7 +3,7 @@ package org.gumtree.office.addressbook.data;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.gumtree.office.addressbook.AddressBookEntry;
+import org.gumtree.office.addressbook.model.AddressBookEntry;
 
 public class AddressBookData {
 

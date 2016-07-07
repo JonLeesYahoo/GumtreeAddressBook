@@ -1,9 +1,27 @@
-package org.gumtree.office.addressbook;
+package org.gumtree.office.addressbook.model;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The AddressBookEntry is a class containing all the data for a specific entry in the AddressBook. It also
+ * contains various functions for returning data not contained within the class, such as isMale and getAge.
+ * 
+ * The constructor takes 3 Strings as parameters and handles the task of converting the date of birth to a Date class
+ * in order to remove that burden from any calling code. However, the supplied date string must always be in the specified 
+ * Date format. 
+ * 
+ * There is a complication using the DateTimeFormatter with 2 digit year values (such as 88), which is that the year 
+ * is assumed to be 2088 and not 1988. This means that we have to check if the date has been created in the future, and if
+ * so then we can simply subtract 100 years. There may be a setting somewhere within the DateTimeFormatter or LocalDate to
+ * handle this, but time constraints have prevented me from looking further. 
+ * 
+ * So this is a "pragmatic" solution for the time being. 
+ * 
+ * @author Jonathan Lees
+ *
+ */
 public class AddressBookEntry {
 
 	private String name;
@@ -28,10 +46,10 @@ public class AddressBookEntry {
 		this.gender = gender.trim();
 		this.dateOfBirth  = LocalDate.parse(dateOfBirth.trim(), formatter);
 		
-		//perform a sanity check that the birth date isn't in the future.
+		//check that the birth date isn't in the future.
 		//This is highly likely given we are forced to use 2 digit years!
-		//In which case the DateTimeFormatter will have assumed this century instead of last, so -100 years
-		//This is a bit smelly, but we would need to update the input dates otherwise.
+		//In which case the DateTimeFormatter will have assumed a future date instead of past, so -100 years
+		//This is a perhps a bit smelly, but I haven't as yet found a setting to deal with this future/past concept.
 		LocalDate today = LocalDate.now();
 		if (this.dateOfBirth.isAfter(today)) {
 			this.dateOfBirth = this.dateOfBirth.plusYears(-100);
